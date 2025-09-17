@@ -106,6 +106,12 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
       return;
     }
 
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('You must be logged in to add budgets');
+      return;
+    }
+
     setLoading(true);
     try {
       const { error } = await supabase
@@ -115,7 +121,8 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
           name: budgetName,
           budgeted_amount: parseFloat(budgetAmount),
           month: parseInt(selectedMonth),
-          year: parseInt(selectedYear)
+          year: parseInt(selectedYear),
+          user_id: user.id
         });
 
       if (error) {

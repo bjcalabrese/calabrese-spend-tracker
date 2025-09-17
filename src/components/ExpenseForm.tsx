@@ -168,6 +168,12 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
       return;
     }
 
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('You must be logged in to add expenses');
+      return;
+    }
+
     setLoading(true);
     try {
       const { error } = await supabase
@@ -178,7 +184,8 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
           name: expenseName,
           amount: parseFloat(expenseAmount),
           expense_date: expenseDate,
-          notes: expenseNotes || null
+          notes: expenseNotes || null,
+          user_id: user.id
         });
 
       if (error) throw error;

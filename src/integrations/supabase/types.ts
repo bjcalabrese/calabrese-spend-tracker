@@ -21,6 +21,7 @@ export type Database = {
           icon: string | null
           id: string
           name: string
+          user_id: string | null
         }
         Insert: {
           color?: string
@@ -28,6 +29,7 @@ export type Database = {
           icon?: string | null
           id?: string
           name: string
+          user_id?: string | null
         }
         Update: {
           color?: string
@@ -35,6 +37,7 @@ export type Database = {
           icon?: string | null
           id?: string
           name?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -48,6 +51,7 @@ export type Database = {
           id: string
           name: string
           notes: string | null
+          user_id: string | null
         }
         Insert: {
           amount: number
@@ -58,6 +62,7 @@ export type Database = {
           id?: string
           name: string
           notes?: string | null
+          user_id?: string | null
         }
         Update: {
           amount?: number
@@ -68,6 +73,7 @@ export type Database = {
           id?: string
           name?: string
           notes?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -95,6 +101,7 @@ export type Database = {
           month: number
           name: string
           updated_at: string
+          user_id: string | null
           year: number
         }
         Insert: {
@@ -105,6 +112,7 @@ export type Database = {
           month: number
           name: string
           updated_at?: string
+          user_id?: string | null
           year: number
         }
         Update: {
@@ -115,6 +123,7 @@ export type Database = {
           month?: number
           name?: string
           updated_at?: string
+          user_id?: string | null
           year?: number
         }
         Relationships: [
@@ -126,6 +135,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -10,7 +10,6 @@ import { ExpenseChart } from './ExpenseChart';
 import { BudgetForm } from './BudgetForm';
 import { ExpenseForm } from './ExpenseForm';
 import { ReportsSection } from './ReportsSection';
-import { AccountSettings } from './AccountSettings';
 import { BudgetSuggestions } from './BudgetSuggestions';
 import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
 
@@ -22,7 +21,7 @@ interface DashboardStats {
 }
 
 export const Dashboard = () => {
-  const { logout } = useAuth();
+  const { signOut, user } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalBudget: 0,
     totalExpenses: 0,
@@ -94,8 +93,10 @@ export const Dashboard = () => {
             <p className="text-sm text-muted-foreground">Smart spending analysis and budget suggestions</p>
           </div>
           <div className="flex items-center gap-2">
-            <AccountSettings />
-            <Button variant="outline" size="sm" onClick={logout}>
+            <span className="text-sm text-muted-foreground">
+              Welcome, {user?.user_metadata?.display_name || user?.email}
+            </span>
+            <Button variant="outline" size="sm" onClick={signOut}>
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>

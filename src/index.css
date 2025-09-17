@@ -8,132 +8,125 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Financial App Design System - Calabrese Budget */
-    --background: 248 253 255;
-    --foreground: 215 28% 17%;
+    /* Green Financial App Design System - Calabrese Budget */
+    --background: 0 0% 100%;
+    --foreground: 160 15% 15%;
 
-    --card: 255 255 255;
-    --card-foreground: 215 28% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 15% 15%;
 
-    --popover: 255 255 255;
-    --popover-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 15% 15%;
 
-    /* Deep Financial Blue */
-    --primary: 215 100% 20%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Deep Forest Green */
+    --primary: 160 60% 25%;
+    --primary-foreground: 0 0% 98%;
 
-    /* Emerald Green for positive */
-    --secondary: 158 64% 52%;
-    --secondary-foreground: 255 255 255;
+    /* Secondary - Emerald Green */
+    --secondary: 160 84% 39%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 13% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 160 10% 95%;
+    --muted-foreground: 160 8% 46%;
 
-    /* Warm Orange for warnings */
-    --accent: 25 95% 53%;
-    --accent-foreground: 255 255 255;
+    /* Accent - Mint Green */
+    --accent: 160 50% 70%;
+    --accent-foreground: 160 60% 15%;
 
     /* Red for negative/overspending */
     --destructive: 0 84% 60%;
-    --destructive-foreground: 255 255 255;
+    --destructive-foreground: 0 0% 98%;
 
-    /* Success Green */
+    /* Success - Bright Green */
     --success: 142 76% 36%;
-    --success-foreground: 255 255 255;
+    --success-foreground: 0 0% 98%;
 
-    /* Warning Orange */
-    --warning: 38 92% 50%;
-    --warning-foreground: 255 255 255;
+    /* Warning - Sage Green */
+    --warning: 85 30% 50%;
+    --warning-foreground: 0 0% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 215 100% 20%;
+    --border: 160 20% 90%;
+    --input: 160 20% 94%;
+    --ring: 160 60% 25%;
 
     --radius: 0.75rem;
 
-    /* Custom Financial Gradients */
-    --gradient-financial: linear-gradient(135deg, hsl(215 100% 20%) 0%, hsl(215 100% 35%) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(158 64% 52%) 100%);
-    --gradient-warning: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(25 95% 53%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(215 100% 20%) 0%, hsl(158 64% 52%) 100%);
+    /* Custom Green Financial Gradients */
+    --gradient-financial: linear-gradient(135deg, hsl(160 60% 25%) 0%, hsl(160 84% 39%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(160 84% 39%) 100%);
+    --gradient-warning: linear-gradient(135deg, hsl(85 30% 50%) 0%, hsl(160 50% 70%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(160 60% 25%) 0%, hsl(160 84% 39%) 50%, hsl(160 50% 70%) 100%);
     
     /* Shadows */
-    --shadow-financial: 0 4px 24px -4px hsl(215 100% 20% / 0.15);
-    --shadow-card: 0 2px 12px -4px hsl(215 28% 17% / 0.08);
-    --shadow-hover: 0 8px 32px -8px hsl(215 100% 20% / 0.25);
+    --shadow-financial: 0 4px 24px -4px hsl(160 60% 25% / 0.15);
+    --shadow-card: 0 2px 12px -4px hsl(160 15% 15% / 0.08);
+    --shadow-hover: 0 8px 32px -8px hsl(160 60% 25% / 0.25);
 
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-background: 160 10% 98%;
+    --sidebar-foreground: 160 15% 15%;
+    --sidebar-primary: 160 60% 25%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 160 10% 95%;
+    --sidebar-accent-foreground: 160 60% 25%;
+    --sidebar-border: 160 20% 90%;
+    --sidebar-ring: 160 84% 39%;
   }
 
   .dark {
-    --background: 215 28% 8%;
-    --foreground: 210 40% 98%;
+    --background: 160 20% 8%;
+    --foreground: 160 10% 95%;
 
-    --card: 215 28% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 160 15% 12%;
+    --card-foreground: 160 10% 95%;
 
-    --popover: 215 28% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 160 15% 12%;
+    --popover-foreground: 160 10% 95%;
 
-    --primary: 158 64% 52%;
-    --primary-foreground: 215 28% 8%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 160 20% 8%;
 
-    --secondary: 215 100% 35%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 160 60% 25%;
+    --secondary-foreground: 160 10% 95%;
 
-    --muted: 215 28% 16%;
-    --muted-foreground: 215 16% 65%;
+    --muted: 160 15% 16%;
+    --muted-foreground: 160 10% 65%;
 
-    --accent: 25 95% 53%;
-    --accent-foreground: 215 28% 8%;
+    --accent: 160 50% 70%;
+    --accent-foreground: 160 20% 8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 160 10% 95%;
 
     --success: 142 76% 36%;
-    --success-foreground: 210 40% 98%;
+    --success-foreground: 160 10% 95%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 215 28% 8%;
+    --warning: 85 30% 50%;
+    --warning-foreground: 160 10% 95%;
 
-    --border: 215 28% 20%;
-    --input: 215 28% 20%;
-    --ring: 158 64% 52%;
+    --border: 160 15% 20%;
+    --input: 160 15% 20%;
+    --ring: 160 84% 39%;
 
-    /* Dark mode gradients */
-    --gradient-financial: linear-gradient(135deg, hsl(215 28% 12%) 0%, hsl(215 100% 20%) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(158 64% 52%) 100%);
-    --gradient-warning: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(25 95% 53%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(215 28% 12%) 0%, hsl(158 64% 52%) 100%);
+    /* Dark mode green gradients */
+    --gradient-financial: linear-gradient(135deg, hsl(160 15% 12%) 0%, hsl(160 60% 25%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(160 84% 39%) 100%);
+    --gradient-warning: linear-gradient(135deg, hsl(85 30% 50%) 0%, hsl(160 50% 70%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(160 15% 12%) 0%, hsl(160 60% 25%) 50%, hsl(160 84% 39%) 100%);
     
     --shadow-financial: 0 4px 24px -4px hsl(0 0% 0% / 0.3);
     --shadow-card: 0 2px 12px -4px hsl(0 0% 0% / 0.2);
     --shadow-hover: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 160 20% 10%;
+    --sidebar-foreground: 160 10% 95%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 160 20% 8%;
+    --sidebar-accent: 160 15% 16%;
+    --sidebar-accent-foreground: 160 10% 95%;
+    --sidebar-border: 160 15% 20%;
+    --sidebar-ring: 160 84% 39%;
   }
 }
 

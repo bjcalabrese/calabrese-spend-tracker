@@ -31,7 +31,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = React.useCallback((username: string, password: string): boolean => {
-    if (username === 'admin' && password === 'admin') {
+    const storedPassword = localStorage.getItem('calabrese-budget-password') || 'admin';
+    
+    if (username === 'admin' && password === storedPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('calabrese-budget-auth', 'authenticated');
       return true;

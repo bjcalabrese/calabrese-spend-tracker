@@ -20,19 +20,19 @@ export const LoginForm: React.FC = () => {
     if (login(username, password)) {
       // Success - context will handle the state change
     } else {
-      setError('Invalid credentials. Use admin/admin to access.');
+      setError('Invalid username or password.');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4">
-      <Card className="w-full max-w-md shadow-financial">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/20 p-4">
+      <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold bg-gradient-financial bg-clip-text text-transparent">
-            Calabrese Budget
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            Calabrese Spending Tracker
           </CardTitle>
           <CardDescription>
-            Family spending tracker and budget manager
+            Smart spending analysis and budget suggestions
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -69,11 +69,6 @@ export const LoginForm: React.FC = () => {
               Sign In
             </Button>
           </form>
-          <div className="mt-4 text-center">
-            <p className="text-sm text-muted-foreground">
-              Default credentials: admin / admin
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>

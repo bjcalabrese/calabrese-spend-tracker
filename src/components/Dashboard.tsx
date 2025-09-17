@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LogOut, Plus, TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
-import { BudgetSuggestions } from './BudgetSuggestions';
-import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
+import { MonthlyTrends } from './MonthlyTrends';
 import { ExpenseChart } from './ExpenseChart';
 import { BudgetForm } from './BudgetForm';
 import { ExpenseForm } from './ExpenseForm';
 import { ReportsSection } from './ReportsSection';
+import { AccountSettings } from './AccountSettings';
+import { BudgetSuggestions } from './BudgetSuggestions';
+import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
 
 interface DashboardStats {
   totalBudget: number;
@@ -91,10 +93,13 @@ export const Dashboard = () => {
             </h1>
             <p className="text-sm text-muted-foreground">Smart spending analysis and budget suggestions</p>
           </div>
-          <Button variant="outline" size="sm" onClick={logout}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <AccountSettings />
+            <Button variant="outline" size="sm" onClick={logout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -181,10 +186,7 @@ export const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="trends" className="space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <ExpenseChart />
-              <ReportsSection />
-            </div>
+            <MonthlyTrends />
           </TabsContent>
 
           <TabsContent value="budget">

@@ -10,6 +10,7 @@ import { ExpenseChart } from './ExpenseChart';
 import { BudgetForm } from './BudgetForm';
 import { ExpenseForm } from './ExpenseForm';
 import { ReportsSection } from './ReportsSection';
+import { AccountSettings } from './AccountSettings';
 import { BudgetSuggestions } from './BudgetSuggestions';
 import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
 
@@ -96,6 +97,7 @@ export const Dashboard = () => {
             <span className="text-sm text-muted-foreground">
               Welcome, {user?.user_metadata?.display_name || user?.email}
             </span>
+            <AccountSettings />
             <Button variant="outline" size="sm" onClick={signOut}>
               <LogOut className="h-4 w-4 mr-2" />
               Logout

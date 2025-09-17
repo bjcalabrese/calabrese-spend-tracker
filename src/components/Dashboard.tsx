@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LogOut, Plus, TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
-import { BudgetOverview } from './BudgetOverview';
+import { BudgetSuggestions } from './BudgetSuggestions';
+import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
 import { ExpenseChart } from './ExpenseChart';
 import { BudgetForm } from './BudgetForm';
 import { ExpenseForm } from './ExpenseForm';
@@ -26,7 +27,7 @@ export const Dashboard = () => {
     variance: 0,
     monthlyTrend: 0
   });
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('spending');
 
   useEffect(() => {
     loadDashboardStats();
@@ -85,10 +86,10 @@ export const Dashboard = () => {
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-financial bg-clip-text text-transparent">
-              Calabrese Budget
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              Calabrese Spending Tracker
             </h1>
-            <p className="text-sm text-muted-foreground">Family spending tracker</p>
+            <p className="text-sm text-muted-foreground">Smart spending analysis and budget suggestions</p>
           </div>
           <Button variant="outline" size="sm" onClick={logout}>
             <LogOut className="h-4 w-4 mr-2" />
@@ -160,42 +161,34 @@ export const Dashboard = () => {
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="budget">Budget</TabsTrigger>
-            <TabsTrigger value="expenses">Expenses</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="spending">Spending</TabsTrigger>
+            <TabsTrigger value="habits">Habits</TabsTrigger>
+            <TabsTrigger value="suggestions">Suggestions</TabsTrigger>
             <TabsTrigger value="trends">Trends</TabsTrigger>
+            <TabsTrigger value="budget">Budget</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-4">
+          <TabsContent value="spending" className="space-y-4">
+            <ExpenseForm onExpenseAdded={loadDashboardStats} />
+          </TabsContent>
+
+          <TabsContent value="habits" className="space-y-4">
+            <SpendingHabitsAnalysis />
+          </TabsContent>
+
+          <TabsContent value="suggestions" className="space-y-4">
+            <BudgetSuggestions />
+          </TabsContent>
+
+          <TabsContent value="trends" className="space-y-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <BudgetOverview onStatsUpdate={loadDashboardStats} />
               <ExpenseChart />
+              <ReportsSection />
             </div>
           </TabsContent>
 
           <TabsContent value="budget">
             <BudgetForm onBudgetAdded={loadDashboardStats} />
-          </TabsContent>
-
-          <TabsContent value="expenses">
-            <ExpenseForm onExpenseAdded={loadDashboardStats} />
-          </TabsContent>
-
-          <TabsContent value="reports">
-            <ReportsSection />
-          </TabsContent>
-
-          <TabsContent value="trends">
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle>Spending Trends Analysis</CardTitle>
-                <CardDescription>Coming soon - Advanced trend analysis and forecasting</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">This section will include detailed trend analysis, seasonal patterns, and spending forecasts.</p>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>

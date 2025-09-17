@@ -27,8 +27,11 @@ export const AccountSettings: React.FC = () => {
     setError('');
     setSuccess(false);
 
+    // Get current password from localStorage
+    const storedPassword = localStorage.getItem('calabrese-budget-password') || 'admin';
+
     // Validate current password
-    if (currentPassword !== 'admin') {
+    if (currentPassword !== storedPassword) {
       setError('Current password is incorrect');
       return;
     }
@@ -44,8 +47,7 @@ export const AccountSettings: React.FC = () => {
       return;
     }
 
-    // In a real app, this would make an API call to change the password
-    // For now, we'll update localStorage and show success
+    // Update password in localStorage
     localStorage.setItem('calabrese-budget-password', newPassword);
     
     setSuccess(true);

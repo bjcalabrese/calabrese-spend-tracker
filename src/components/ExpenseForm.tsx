@@ -351,7 +351,7 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
                     <TableCell>
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        {new Date(expense.expense_date).toLocaleDateString()}
+                        {expense.expense_date}
                       </div>
                     </TableCell>
                     <TableCell>

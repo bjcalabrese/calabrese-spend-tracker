@@ -65,10 +65,13 @@ export const HistoricalSpending: React.FC = () => {
       const yearsSet = new Set<number>();
 
       expenses.forEach((expense) => {
-        const date = new Date(expense.expense_date);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const monthName = date.toLocaleDateString('en-US', { month: 'long' });
+        // Parse date string directly to avoid timezone issues
+        const dateParts = expense.expense_date.split('-');
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]);
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthName = monthNames[month - 1];
         const categoryName = expense.expense_categories?.name || 'Uncategorized';
         const amount = Number(expense.amount);
 

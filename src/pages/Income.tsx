@@ -38,7 +38,7 @@ export const Income = () => {
       const { data, error } = await supabase
         .from('income')
         .select('*')
-        .order('amount', { ascending: false });
+        .order('income_date', { ascending: false });
 
       if (error) throw error;
       setIncomes(data || []);

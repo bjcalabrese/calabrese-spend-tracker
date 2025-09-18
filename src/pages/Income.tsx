@@ -25,7 +25,8 @@ export const Income = () => {
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
-    frequency: 'monthly'
+    frequency: 'monthly',
+    income_date: new Date().toISOString().split('T')[0] // Default to current date
   });
 
   useEffect(() => {
@@ -68,13 +69,14 @@ export const Income = () => {
           name: formData.name.trim(),
           amount: parseFloat(formData.amount),
           frequency: formData.frequency,
+          income_date: formData.income_date,
           is_recurring: true
         }]);
 
       if (error) throw error;
       
       toast.success('Income source added successfully');
-      setFormData({ name: '', amount: '', frequency: 'monthly' });
+      setFormData({ name: '', amount: '', frequency: 'monthly', income_date: new Date().toISOString().split('T')[0] });
       loadIncomes();
     } catch (error) {
       console.error('Error adding income:', error);
@@ -147,7 +149,7 @@ export const Income = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <Label htmlFor="name">Income Source</Label>
                 <Input
@@ -182,6 +184,15 @@ export const Income = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor="income_date">Date</Label>
+                <Input
+                  id="income_date"
+                  type="date"
+                  value={formData.income_date}
+                  onChange={(e) => setFormData({ ...formData, income_date: e.target.value })}
+                />
+              </div>
             </div>
             <Button type="submit" className="w-full md:w-auto">
               <Plus className="h-4 w-4 mr-2" />
@@ -211,6 +222,7 @@ export const Income = () => {
                   <TableHead>Source</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Frequency</TableHead>
+                  <TableHead>Date</TableHead>
                   <TableHead>Monthly Equivalent</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -224,6 +236,9 @@ export const Income = () => {
                       <Badge variant="outline" className="capitalize">
                         {income.frequency}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(income.income_date).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="font-semibold text-success">
                       ${calculateMonthlyAmount(Number(income.amount), income.frequency).toFixed(2)}

@@ -1,10 +1,13 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthPage } from '@/components/AuthPage';
-import { AppLayout } from '@/components/layout/AppLayout';
-import { Dashboard } from './Dashboard';
+import { AppLayout } from './AppLayout';
 
-const Index: React.FC = () => {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -21,9 +24,7 @@ const Index: React.FC = () => {
 
   return (
     <AppLayout>
-      <Dashboard />
+      {children}
     </AppLayout>
   );
 };
-
-export default Index;

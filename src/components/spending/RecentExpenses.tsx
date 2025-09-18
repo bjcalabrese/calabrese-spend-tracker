@@ -4,13 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Trash2, Eye, CalendarIcon } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Calendar, Trash2, Eye } from 'lucide-react';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { DateRangeNavigation } from '@/components/DateRangeNavigation';
 
 interface Expense {
   id: string;
@@ -32,6 +30,8 @@ interface RecentExpensesProps {
 export const RecentExpenses = ({ onExpenseDeleted }: RecentExpensesProps) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [expenseToDelete, setExpenseToDelete] = useState<{ id: string; name: string } | null>(null);
   
   // Default to current month
   const currentDate = new Date();
@@ -84,12 +84,19 @@ export const RecentExpenses = ({ onExpenseDeleted }: RecentExpensesProps) => {
     }
   };
 
-  const handleDelete = async (expenseId: string) => {
+  const handleDeleteClick = (expense: Expense) => {
+    setExpenseToDelete({ id: expense.id, name: expense.name });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!expenseToDelete) return;
+    
     try {
       const { error } = await supabase
         .from('expenses')
         .delete()
-        .eq('id', expenseId);
+        .eq('id', expenseToDelete.id);
 
       if (error) throw error;
 
@@ -115,76 +122,12 @@ export const RecentExpenses = ({ onExpenseDeleted }: RecentExpensesProps) => {
       </CardHeader>
       <CardContent>
         {/* Date Range Filter */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-muted/30 rounded-lg">
-          <div className="space-y-2">
-            <Label>From Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-[240px] justify-start text-left font-normal",
-                    !dateFrom && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateFrom ? format(dateFrom, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <CalendarComponent
-                  mode="single"
-                  selected={dateFrom}
-                  onSelect={(date) => date && setDateFrom(date)}
-                  initialFocus
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          
-          <div className="space-y-2">
-            <Label>To Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-[240px] justify-start text-left font-normal",
-                    !dateTo && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dateTo ? format(dateTo, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <CalendarComponent
-                  mode="single"
-                  selected={dateTo}
-                  onSelect={(date) => date && setDateTo(date)}
-                  initialFocus
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          
-          <div className="flex items-end">
-            <Button 
-              onClick={() => {
-                const currentDate = new Date();
-                const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-                const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-                setDateFrom(firstDay);
-                setDateTo(lastDay);
-              }}
-              variant="outline"
-            >
-              Current Month
-            </Button>
-          </div>
-        </div>
+        <DateRangeNavigation
+          dateFrom={dateFrom}
+          dateTo={dateTo}
+          onDateFromChange={setDateFrom}
+          onDateToChange={setDateTo}
+        />
 
         {loading ? (
           <div className="flex items-center justify-center py-8">
@@ -240,7 +183,7 @@ export const RecentExpenses = ({ onExpenseDeleted }: RecentExpensesProps) => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDelete(expense.id)}
+                      onClick={() => handleDeleteClick(expense)}
                       className="text-destructive hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -252,6 +195,16 @@ export const RecentExpenses = ({ onExpenseDeleted }: RecentExpensesProps) => {
           </Table>
         )}
       </CardContent>
+      
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="Delete Expense"
+        description={`Are you sure you want to delete the expense "${expenseToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        onConfirm={handleDelete}
+        variant="destructive"
+      />
     </Card>
   );
 };

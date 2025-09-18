@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, Edit } from 'lucide-react';
 import { toast } from 'sonner';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 interface Category {
   id: string;
@@ -39,6 +40,8 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
   const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
   const [loading, setLoading] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [budgetToDelete, setBudgetToDelete] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     loadCategories();
@@ -148,12 +151,19 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
     }
   };
 
-  const handleDelete = async (budgetId: string) => {
+  const handleDeleteClick = (budget: Budget) => {
+    setBudgetToDelete({ id: budget.id, name: budget.name });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!budgetToDelete) return;
+    
     try {
       const { error } = await supabase
         .from('monthly_budgets')
         .delete()
-        .eq('id', budgetId);
+        .eq('id', budgetToDelete.id);
 
       if (error) throw error;
 
@@ -317,7 +327,7 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleDelete(budget.id)}
+                        onClick={() => handleDeleteClick(budget)}
                         className="text-destructive hover:text-destructive"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -330,6 +340,16 @@ export const BudgetForm = ({ onBudgetAdded }: BudgetFormProps) => {
           )}
         </CardContent>
       </Card>
+      
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="Delete Budget"
+        description={`Are you sure you want to delete the budget "${budgetToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        onConfirm={handleDelete}
+        variant="destructive"
+      />
     </div>
   );
 };

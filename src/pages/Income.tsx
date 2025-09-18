@@ -9,6 +9,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { DateRangeNavigation } from '@/components/DateRangeNavigation';
+import { format } from 'date-fns';
 
 interface Income {
   id: string;
@@ -24,6 +27,17 @@ export const Income = () => {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Income>>({});
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [incomeToDelete, setIncomeToDelete] = useState<{ id: string; name: string } | null>(null);
+  
+  // Default to current month for date filtering
+  const currentDate = new Date();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  
+  const [dateFrom, setDateFrom] = useState<Date>(firstDayOfMonth);
+  const [dateTo, setDateTo] = useState<Date>(lastDayOfMonth);
+  
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
@@ -33,13 +47,18 @@ export const Income = () => {
 
   useEffect(() => {
     loadIncomes();
-  }, []);
+  }, [dateFrom, dateTo]);
 
   const loadIncomes = async () => {
     try {
+      const fromDate = format(dateFrom, 'yyyy-MM-dd');
+      const toDate = format(dateTo, 'yyyy-MM-dd');
+      
       const { data, error } = await supabase
         .from('income')
         .select('*')
+        .gte('income_date', fromDate)
+        .lte('income_date', toDate)
         .order('income_date', { ascending: false });
 
       if (error) throw error;
@@ -86,12 +105,19 @@ export const Income = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteClick = (income: Income) => {
+    setIncomeToDelete({ id: income.id, name: income.name });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!incomeToDelete) return;
+    
     try {
       const { error } = await supabase
         .from('income')
         .delete()
-        .eq('id', id);
+        .eq('id', incomeToDelete.id);
 
       if (error) throw error;
       
@@ -266,14 +292,21 @@ export const Income = () => {
       <Card className="shadow-card">
         <CardHeader>
           <CardTitle>Income Sources</CardTitle>
-          <CardDescription>Your current income sources</CardDescription>
+          <CardDescription>Filter and view your income sources by date range</CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Date Range Filter */}
+          <DateRangeNavigation
+            dateFrom={dateFrom}
+            dateTo={dateTo}
+            onDateFromChange={setDateFrom}
+            onDateToChange={setDateTo}
+          />
           {loading ? (
             <div className="text-center py-4">Loading income sources...</div>
           ) : incomes.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No income sources added yet. Add your first income source above.
+              No income sources found for the selected date range. Try adjusting the date range or add income sources for this period.
             </div>
           ) : (
             <Table>
@@ -385,7 +418,7 @@ export const Income = () => {
                             <Button
                               variant="destructive"
                               size="sm"
-                              onClick={() => handleDelete(income.id)}
+                              onClick={() => handleDeleteClick(income)}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -400,6 +433,16 @@ export const Income = () => {
           )}
         </CardContent>
       </Card>
+      
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="Delete Income Source"
+        description={`Are you sure you want to delete the income source "${incomeToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        onConfirm={handleDelete}
+        variant="destructive"
+      />
     </div>
   );
 };

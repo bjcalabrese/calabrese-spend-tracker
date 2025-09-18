@@ -17,6 +17,7 @@ import { AnalysisSuggestions } from "./pages/AnalysisSuggestions";
 import { AnalysisTrends } from "./pages/AnalysisTrends";
 import { History } from "./pages/History";
 import { Settings } from "./pages/Settings";
+import { Income } from "./pages/Income";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App: React.FC = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/income" element={<ProtectedRoute><Income /></ProtectedRoute>} />
             <Route path="/spending/add" element={<ProtectedRoute><SpendingAdd /></ProtectedRoute>} />
             <Route path="/spending/view" element={<ProtectedRoute><SpendingView /></ProtectedRoute>} />
             <Route path="/budget" element={<ProtectedRoute><BudgetManager /></ProtectedRoute>} />

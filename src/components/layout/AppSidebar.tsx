@@ -8,7 +8,8 @@ import {
   PlusCircle,
   Eye,
   Target,
-  Brain
+  Brain,
+  DollarSign
 } from "lucide-react";
 import {
   Sidebar,
@@ -35,6 +36,7 @@ const analysisItems = [
 
 const mainItems = [
   { title: "Dashboard", url: "/", icon: BarChart3 },
+  { title: "Income", url: "/income", icon: DollarSign },
   { title: "Budget Manager", url: "/budget", icon: Calculator },
   { title: "Historical Data", url: "/history", icon: History },
   { title: "Settings", url: "/settings", icon: Settings },

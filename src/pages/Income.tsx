@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Income {
@@ -22,6 +22,8 @@ interface Income {
 export const Income = () => {
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Partial<Income>>({});
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
@@ -99,6 +101,50 @@ export const Income = () => {
       console.error('Error deleting income:', error);
       toast.error('Failed to delete income source');
     }
+  };
+
+  const handleEdit = (income: Income) => {
+    setEditingId(income.id);
+    setEditData({
+      name: income.name,
+      amount: income.amount,
+      frequency: income.frequency,
+      income_date: income.income_date
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingId || !editData.name || !editData.amount) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('income')
+        .update({
+          name: editData.name,
+          amount: parseFloat(editData.amount.toString()),
+          frequency: editData.frequency,
+          income_date: editData.income_date
+        })
+        .eq('id', editingId);
+
+      if (error) throw error;
+      
+      toast.success('Income updated successfully');
+      setEditingId(null);
+      setEditData({});
+      loadIncomes();
+    } catch (error) {
+      console.error('Error updating income:', error);
+      toast.error('Failed to update income');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditData({});
   };
 
   const calculateMonthlyAmount = (amount: number, frequency: string) => {
@@ -224,33 +270,114 @@ export const Income = () => {
                   <TableHead>Frequency</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Monthly Equivalent</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="w-32">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {incomes.map((income) => (
                   <TableRow key={income.id}>
-                    <TableCell className="font-medium">{income.name}</TableCell>
-                    <TableCell>${Number(income.amount).toFixed(2)}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {income.frequency}
-                      </Badge>
+                    <TableCell className="font-medium">
+                      {editingId === income.id ? (
+                        <Input
+                          value={editData.name || ''}
+                          onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                          className="h-8"
+                        />
+                      ) : (
+                        income.name
+                      )}
                     </TableCell>
                     <TableCell>
-                      {new Date(income.income_date).toLocaleDateString()}
+                      {editingId === income.id ? (
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={editData.amount || ''}
+                          onChange={(e) => setEditData({ ...editData, amount: parseFloat(e.target.value) || 0 })}
+                          className="h-8 w-24"
+                        />
+                      ) : (
+                        `$${Number(income.amount).toFixed(2)}`
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === income.id ? (
+                        <Select 
+                          value={editData.frequency || income.frequency} 
+                          onValueChange={(value) => setEditData({ ...editData, frequency: value })}
+                        >
+                          <SelectTrigger className="h-8 w-28">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="weekly">Weekly</SelectItem>
+                            <SelectItem value="biweekly">Bi-weekly</SelectItem>
+                            <SelectItem value="monthly">Monthly</SelectItem>
+                            <SelectItem value="annual">Annual</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <Badge variant="outline" className="capitalize">
+                          {income.frequency}
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editingId === income.id ? (
+                        <Input
+                          type="date"
+                          value={editData.income_date || ''}
+                          onChange={(e) => setEditData({ ...editData, income_date: e.target.value })}
+                          className="h-8"
+                        />
+                      ) : (
+                        new Date(income.income_date).toLocaleDateString()
+                      )}
                     </TableCell>
                     <TableCell className="font-semibold text-success">
-                      ${calculateMonthlyAmount(Number(income.amount), income.frequency).toFixed(2)}
+                      ${calculateMonthlyAmount(
+                        Number(editingId === income.id ? editData.amount || income.amount : income.amount), 
+                        editingId === income.id ? editData.frequency || income.frequency : income.frequency
+                      ).toFixed(2)}
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(income.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      <div className="flex gap-1">
+                        {editingId === income.id ? (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleSaveEdit}
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleCancelEdit}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(income)}
+                            >
+                              <Edit3 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(income.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

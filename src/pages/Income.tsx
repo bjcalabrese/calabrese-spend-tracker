@@ -147,6 +147,13 @@ export const Income = () => {
     setEditData({});
   };
 
+  const formatDateForDisplay = (dateString: string) => {
+    // Parse the date string as local date to avoid timezone issues
+    const [year, month, day] = dateString.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    return date.toLocaleDateString();
+  };
+
   const calculateMonthlyAmount = (amount: number, frequency: string) => {
     switch (frequency) {
       case 'weekly': return amount * 4.33;
@@ -331,7 +338,7 @@ export const Income = () => {
                           className="h-8"
                         />
                       ) : (
-                        new Date(income.income_date).toLocaleDateString()
+                        formatDateForDisplay(income.income_date)
                       )}
                     </TableCell>
                     <TableCell className="font-semibold text-success">

@@ -13,6 +13,7 @@ import { ReportsSection } from './ReportsSection';
 import { AccountSettings } from './AccountSettings';
 import { BudgetSuggestions } from './BudgetSuggestions';
 import { SpendingHabitsAnalysis } from './SpendingHabitsAnalysis';
+import { HistoricalSpending } from './HistoricalSpending';
 
 interface DashboardStats {
   totalBudget: number;
@@ -168,11 +169,12 @@ export const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="spending">Spending</TabsTrigger>
             <TabsTrigger value="habits">Habits</TabsTrigger>
             <TabsTrigger value="suggestions">Suggestions</TabsTrigger>
             <TabsTrigger value="trends">Trends</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
             <TabsTrigger value="budget">Budget</TabsTrigger>
           </TabsList>
 
@@ -190,6 +192,10 @@ export const Dashboard = () => {
 
           <TabsContent value="trends" className="space-y-4">
             <MonthlyTrends />
+          </TabsContent>
+
+          <TabsContent value="history" className="space-y-4">
+            <HistoricalSpending />
           </TabsContent>
 
           <TabsContent value="budget">

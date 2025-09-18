@@ -13,7 +13,7 @@ export const Dashboard = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Financial Dashboard</h1>
         <p className="text-muted-foreground mt-2">
-          Complete overview of your income, budget allocations, and spending
+          Complete overview of your income, budget allocations, and spending - Updated
         </p>
       </div>
 

@@ -54,13 +54,13 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
     loadCategories();
     loadBudgets();
     loadExpenses();
-  }, []);
+  }, [expenseDate]);
 
   useEffect(() => {
     if (selectedCategory) {
       loadBudgetsForCategory(selectedCategory);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, expenseDate]);
 
   const loadCategories = async () => {
     try {
@@ -79,14 +79,14 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
 
   const loadBudgets = async () => {
     try {
-      const currentMonth = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
+      const expenseMonth = new Date(expenseDate).getMonth() + 1;
+      const expenseYear = new Date(expenseDate).getFullYear();
 
       const { data, error } = await supabase
         .from('monthly_budgets')
         .select('id, name, budgeted_amount')
-        .eq('month', currentMonth)
-        .eq('year', currentYear)
+        .eq('month', expenseMonth)
+        .eq('year', expenseYear)
         .order('name');
 
       if (error) throw error;
@@ -98,15 +98,15 @@ export const ExpenseForm = ({ onExpenseAdded }: ExpenseFormProps) => {
 
   const loadBudgetsForCategory = async (categoryId: string) => {
     try {
-      const currentMonth = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
+      const expenseMonth = new Date(expenseDate).getMonth() + 1;
+      const expenseYear = new Date(expenseDate).getFullYear();
 
       const { data, error } = await supabase
         .from('monthly_budgets')
         .select('id, name, budgeted_amount')
         .eq('category_id', categoryId)
-        .eq('month', currentMonth)
-        .eq('year', currentYear)
+        .eq('month', expenseMonth)
+        .eq('year', expenseYear)
         .order('name');
 
       if (error) throw error;

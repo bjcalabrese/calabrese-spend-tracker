@@ -1,5 +1,6 @@
 import { AccountSettings } from '@/components/AccountSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BackupRestore } from '@/components/BackupRestore';
 
 export const Settings = () => {
   return (
@@ -11,13 +12,22 @@ export const Settings = () => {
         </p>
       </div>
 
-      <div className="max-w-2xl">
+      <div className="max-w-2xl space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Account Settings</CardTitle>
           </CardHeader>
           <CardContent>
             <AccountSettings />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <BackupRestore />
           </CardContent>
         </Card>
       </div>

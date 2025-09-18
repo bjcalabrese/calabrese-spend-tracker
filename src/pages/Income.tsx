@@ -154,6 +154,13 @@ export const Income = () => {
     return date.toLocaleDateString();
   };
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  };
+
   const calculateMonthlyAmount = (amount: number, frequency: string) => {
     switch (frequency) {
       case 'weekly': return amount * 4.33;
@@ -184,7 +191,7 @@ export const Income = () => {
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold text-success">
-            ${totalMonthlyIncome.toFixed(2)}
+            {formatCurrency(totalMonthlyIncome)}
           </div>
         </CardContent>
       </Card>
@@ -304,7 +311,7 @@ export const Income = () => {
                           className="h-8 w-24"
                         />
                       ) : (
-                        `$${Number(income.amount).toFixed(2)}`
+                        formatCurrency(Number(income.amount))
                       )}
                     </TableCell>
                     <TableCell>
@@ -342,10 +349,10 @@ export const Income = () => {
                       )}
                     </TableCell>
                     <TableCell className="font-semibold text-success">
-                      ${calculateMonthlyAmount(
+                      {formatCurrency(calculateMonthlyAmount(
                         Number(editingId === income.id ? editData.amount || income.amount : income.amount), 
                         editingId === income.id ? editData.frequency || income.frequency : income.frequency
-                      ).toFixed(2)}
+                      ))}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
